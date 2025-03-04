@@ -4,16 +4,28 @@ kind: Ingress
 metadata:
   name: wordpress-ingress
   namespace: ofir
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-ofir
   rules:
-    - host: aee750e7560244a86894ef72f4630b41-1834286964.us-east-1.elb.amazonaws.com
-      http:
-        paths:
-          - path: /ofir
-            pathType: Prefix
-            backend:
-              service:
-                name: wordpress
-                port:
-                  number: 80
+  - host: a3f88ab77fb3f42489e27799b4e3b9b7-1188049417.us-east-1.elb.amazonaws.com
+    http:
+      paths:
+      - path: /(grafana|login)(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ofir-kube-stack-grafana
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wordpress-service
+            port:
+              number: 80
