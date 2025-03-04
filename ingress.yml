@@ -7,10 +7,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: wordpress.local  
+    - host: aee750e7560244a86894ef72f4630b41-1834286964.us-east-1.elb.amazonaws.com
       http:
         paths:
-          - path: /
+          - path: /ofir
             pathType: Prefix
             backend:
               service:
