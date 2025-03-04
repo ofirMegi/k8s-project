@@ -1,7 +1,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  namespace: ofir
+  namespace: ofir1
   name: ebs-sc-nutzanim
 provisioner: ebs.csi.aws.com
 volumeBindingMode: Immediate
