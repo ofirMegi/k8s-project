@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb
-  namespace: ofir
+  namespace: ofir1
 spec:
   ports:
     - port: 3306
