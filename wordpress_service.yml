@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
-  namespace: ofir
+  namespace: ofir1
   labels:
     app: wordpress
 spec:
