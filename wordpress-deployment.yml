@@ -27,3 +27,23 @@ spec:
               value: "wordpress"
             - name: WORDPRESS_DB_NAME
               value: "wordpress"
+          volumeMounts:
+            - name: wordpress-data-ofir
+              mountPath: /var/www/html
+      volumes:
+        - name: wordpress-data-ofir
+          persistentVolumeClaim:
+            claimName: wordpress-pvc-ofir  
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pvc-ofir
+  namespace: ofir
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ebs-sc-nitzanim
