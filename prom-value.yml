@@ -1,0 +1,5 @@
+grafana:
+  server:
+    root_url:
+      "afd4ae85cc5924ef2a7d6c623be21425-648493874.us-east-1.elb.amazonaws.com/grafana"
+    serve_from_sub_path: true
