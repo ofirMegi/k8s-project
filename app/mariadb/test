@@ -1,0 +1,65 @@
+# django.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+  namespace: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: network
+                operator: In
+                values:
+                - private
+      containers:
+      - name: django
+        image: my-django-app:latest  # החליפי ב-image שלך
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_HOST
+          value: "postgres-service.backend.svc.cluster.local"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_NAME
+          value: "myapp"
+        - name: DATABASE_USER
+          value: "user"
+        - name: DATABASE_PASSWORD
+          value: "password"
+        - name: REDIS_HOST
+          value: "redis-service.backend.svc.cluster.local"
+        - name: REDIS_PORT
+          value: "6379"
+        volumeMounts:
+        - name: efs-storage
+          mountPath: /static  # תיקייה לקבצים סטטיים
+      volumes:
+      - name: efs-storage
+        persistentVolumeClaim:
+          claimName: efs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+  namespace: backend
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: django
